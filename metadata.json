@@ -1,0 +1,6 @@
+{
+  "name": "Car Wash",
+  "description": "Aplicación de lavado de autos a domicilio con agendamiento, semáforo en tiempo real, gestión de cupones, pagos y roles de cliente, operador y administrador.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
