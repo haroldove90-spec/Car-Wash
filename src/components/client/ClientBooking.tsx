@@ -17,6 +17,7 @@ import {
 import { useApp } from '../../context/AppContext';
 import { VehicleCategory } from '../../types';
 import { VehicleIllustration } from '../common/VehicleIllustrations';
+import { GoogleMapLight } from '../common/GoogleMapLight';
 
 interface ClientBookingProps {
   selectedVehicleId: VehicleCategory;
@@ -478,30 +479,23 @@ export const ClientBooking: React.FC<ClientBookingProps> = ({
               </form>
             )}
 
-            {/* Simulated Live Map Preview (Matching the route aesthetic from image.png) */}
-            <div className="relative h-36 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 flex flex-col justify-between p-3">
-              {/* SVG Map Lines Simulation */}
-              <svg className="absolute inset-0 w-full h-full text-indigo-300 opacity-60" viewBox="0 0 300 150" fill="none">
-                <path d="M 10 140 L 80 100 L 140 110 L 200 40 L 280 20" stroke="#818CF8" strokeWidth="4" strokeDasharray="6 4" />
-                <path d="M 30 10 L 100 60 L 180 80 L 260 140" stroke="#CBD5E1" strokeWidth="2" />
-                <circle cx="80" cy="100" r="4" fill="#6366F1" />
-                <circle cx="200" cy="40" r="5" fill="#4F46E5" />
-              </svg>
-
-              {/* Pin at destination */}
-              <div className="relative z-10 self-end flex items-center gap-1.5 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-xl shadow-md border border-slate-200 text-xs font-bold text-slate-800">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                <MapPin className="w-3.5 h-3.5 text-indigo-600" />
-                <span>{activeAddress?.label || 'Destino'}</span>
+            {/* Google Maps Style Light Preview */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-[11px] font-bold text-slate-500">
+                <span className="flex items-center gap-1">
+                  <Navigation className="w-3.5 h-3.5 text-blue-600" />
+                  Ruta calculada hacia el domicilio
+                </span>
+                <span className="text-blue-600 font-extrabold">{distanceKm} km desde base</span>
               </div>
-
-              <div className="relative z-10 flex items-center justify-between text-[11px] font-bold bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700">
-                <div className="flex items-center gap-1">
-                  <Navigation className="w-3 h-3 text-indigo-600" />
-                  <span>Distancia: {distanceKm} km</span>
-                </div>
-                <span className="text-indigo-600 font-extrabold">Cobertura Confirmada</span>
-              </div>
+              <GoogleMapLight
+                heightClass="h-44 sm:h-52"
+                destinationLabel={activeAddress?.label || 'Destino'}
+                destinationAddress={activeAddress?.address}
+                distanceKm={distanceKm}
+                etaMinutes={Math.round(distanceKm * 3.2) || 12}
+                showTurnByTurnBanner={false}
+              />
             </div>
 
             {/* Special Instructions Input */}

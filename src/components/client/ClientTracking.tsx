@@ -19,6 +19,7 @@ import {
 import { useApp } from '../../context/AppContext';
 import { OrderStatus } from '../../types';
 import { VehicleIllustration } from '../common/VehicleIllustrations';
+import { GoogleMapLight } from '../common/GoogleMapLight';
 
 export const ClientTracking: React.FC = () => {
   const {
@@ -361,13 +362,13 @@ export const ClientTracking: React.FC = () => {
             </div>
           )}
 
-          {/* Live Simulated Route Map (Inspired by the route screen with purple lines in image.png) */}
+          {/* Live Simulated Route Map Estilo Google Maps Claro */}
           <div className="bg-white rounded-3xl border border-slate-200/80 p-5 shadow-xs space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Navigation className="w-4 h-4 text-indigo-600" />
+                <Navigation className="w-4 h-4 text-blue-600" />
                 <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-                  Ruta y Ubicación en Vivo
+                  Ruta en Vivo (Google Maps)
                 </h4>
               </div>
               <span className="text-[11px] font-bold text-slate-500">
@@ -375,49 +376,16 @@ export const ClientTracking: React.FC = () => {
               </span>
             </div>
 
-            <div className="relative h-60 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 flex flex-col justify-between p-3.5">
-              {/* Map background grid & streets */}
-              <svg className="absolute inset-0 w-full h-full text-indigo-300 opacity-60" viewBox="0 0 300 240" fill="none">
-                {/* Background road network */}
-                <path d="M 0 60 L 300 60" stroke="#E2E8F0" strokeWidth="6" />
-                <path d="M 0 160 L 300 160" stroke="#E2E8F0" strokeWidth="6" />
-                <path d="M 80 0 L 80 240" stroke="#E2E8F0" strokeWidth="6" />
-                <path d="M 220 0 L 220 240" stroke="#E2E8F0" strokeWidth="6" />
-                <path d="M 150 0 L 150 240" stroke="#F1F5F9" strokeWidth="4" />
-
-                {/* Violet Route Trajectory (Matching the sample image's purple GPS line) */}
-                <path
-                  d="M 50 210 L 80 160 L 150 160 L 220 90 L 250 40"
-                  stroke="#7C3AED"
-                  strokeWidth="5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeDasharray="8 4"
-                />
-
-                {/* Washer Current Position Pin */}
-                <circle cx="150" cy="160" r="9" fill="#4F46E5" />
-                <circle cx="150" cy="160" r="16" stroke="#818CF8" strokeWidth="2" strokeOpacity="0.6" />
-
-                {/* Client Destination Pin */}
-                <circle cx="250" cy="40" r="8" fill="#10B981" />
-              </svg>
-
-              {/* Float Badge Destination */}
-              <div className="relative z-10 self-end bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-xl shadow-md border border-slate-200 text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                <span>{currentOrder.address.label} ({currentOrder.address.distanceKm} km)</span>
-              </div>
-
-              {/* Bottom live stats */}
-              <div className="relative z-10 bg-white/95 backdrop-blur-xs p-2.5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between text-xs font-semibold text-slate-700">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-ping" />
-                  <span>Unidad en movimiento</span>
-                </div>
-                <span className="text-indigo-600 font-bold">Velocidad: 38 km/h</span>
-              </div>
-            </div>
+            <GoogleMapLight
+              heightClass="h-64 sm:h-72"
+              originLabel="Lavador en Camino"
+              destinationLabel={currentOrder.address.label}
+              destinationAddress={currentOrder.address.address}
+              distanceKm={currentOrder.address.distanceKm}
+              etaMinutes={12}
+              showTurnByTurnBanner={false}
+              status={currentOrder.status}
+            />
 
             <p className="text-[11px] text-slate-500 leading-relaxed italic">
               Dirección: {currentOrder.address.address} • Ref: {currentOrder.address.references}
